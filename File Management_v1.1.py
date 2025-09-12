@@ -3,7 +3,7 @@ import sys
 user_file = '' #用户文件地址
 f = '0' #用户的文件
 user_writing = [0] #用户写入的内容
-help = 'file类：exit退出 open打开文件地址  read类：exit退出  all 读取所有内容 line读取指定行数  setting类：information版本信息 help帮助手册 change类：add添加内容 seach类：敬请期待' #帮助手册
+help = 'file类：exit退出 open打开文件地址  read类：exit退出  all 读取所有内容 line读取指定行数  setting类：information版本信息 help帮助手册 change类：add添加内容 remove 删除行 exit退出 seach类：敬请期待' #帮助手册
 
 def file(): #file 模块 命令支持 exit退出 open打开文件地址 已完成(整个模块)
     global user_file
@@ -15,7 +15,6 @@ def file(): #file 模块 命令支持 exit退出 open打开文件地址 已完�
         return
     if a == 'exit':
         return
-    
 
 def read(): #read 模块 命令支持 exit退出  all 读取所有内容 line读取指定行数 已完成(整个模块)
     global user_file
@@ -51,7 +50,7 @@ def read(): #read 模块 命令支持 exit退出  all 读取所有内容 line读
         print('你可能输入了错误的命令，重试')
         return
 
-def setting(): #setting模块 命令支持 information版本信息 help帮助手册 已完成(整个模块)
+def setting(): #seeting模块 命令支持 information版本信息 help帮助手册 已完成(整个模块)
     global help
     a = input('请继续输入，目前在setting->?')
     if a == 'information':
@@ -64,24 +63,24 @@ def setting(): #setting模块 命令支持 information版本信息 help帮助手
 def seach(): #seach模块 未制作 已完成(整个模块)
     print('当前版本不支持 检索 功能')
 
-def change(): #change模块 命令支持 add添加内容
-    global user_file
+def change(): #change模块 命令支持 add添加内容 add 追加字符 remove 删除行 exit退出
+    global user_file;user_writing 
+    if len(user_file) == 0: #文件添加性检查
+        print('你还没有打开文件,请先运行 file->open,add命令不适用新建文件')
+        return
+    f = open(user_file,'r')
+    user_change_file = f.readlines()
+    f.close()
     while True:
         a = input('请继续输入，目前在change->?')
         if a == 'add': #添加
-            if len(user_file) == 0: #文件添加性检查
-                print('你还没有打开文件,请先运行 file->open,add命令不适用新建文件')
-                break
-            f = open(user_file,'r')
-            temp_read = f.read()
-            f.close()
             user_writing = []
             while True:
-                print(temp_read)
+                print(user_change_file)
                 for i in user_writing:
                     print(i)
-                print('以上是当前文件内容 空行前是你之前的文件内容，空行后是你之后的文件内容')
-                temp_write = input('请输入追加内容(写完一行按回车)，输入//exit//保存退出,退出要把前后的斜杠带上,目前在change->add')
+                print('以上是当前文件内容')
+                temp_write = input('请输入追加内容(写完一行按回车)，输入//exit//退出,退出要把前后的斜杠带上,如需删除,请返回上一层用remove,目前在change->add')
                 if temp_write == '//exit//': #退出
                     a = input('是否保存y/n')
                     if a == 'y': #保存
@@ -96,6 +95,26 @@ def change(): #change模块 命令支持 add添加内容
                     if a == 'n': #不保存
                         break
                 user_writing.append(temp_write)
+        if a == 'remove': #删除
+            f = open(user_file,'r')
+            user_change_file = f.readlines()
+            f.close()
+            print(user_change_file)
+            a = input('请输入删除行数,空为返回')
+            if len(a) == 0:
+                break
+            user_change_file.pop(int(a)-1)
+            print(r'---以下是修改后文件,\n为换行符，无需理会---')
+            print(user_change_file)
+            a = input('确定吗？ y/n')
+            if a == 'y':
+                f = open(user_file,'w')
+                for i in user_change_file:
+                    f.write(i)
+                f.close()
+            else:
+                return
+        if a == 'exit': #退出
             return
 
 while True:
