@@ -3,7 +3,7 @@ import sys
 user_file = '' #用户文件地址
 f = '0' #用户的文件
 user_writing = [0] #用户写入的内容
-help = 'file类：exit退出 open打开文件地址  read类：exit退出  all 读取所有内容 line读取指定行数  setting类：information版本信息 help帮助手册 change类：add添加内容 remove 删除行 exit退出 seach类：敬请期待' #帮助手册
+help = 'file类：exit退出 open打开文件地址  read类：exit退出  all 读取所有内容 line读取指定行数  setting类：information版本信息 help帮助手册 change类：add添加内容 remove 删除行 exit退出 change更改某一行 seach类：敬请期待' #帮助手册
 
 def file(): #file 模块 命令支持 exit退出 open打开文件地址 已完成(整个模块)
     global user_file
@@ -18,9 +18,6 @@ def file(): #file 模块 命令支持 exit退出 open打开文件地址 已完�
 
 def read(): #read 模块 命令支持 exit退出  all 读取所有内容 line读取指定行数 已完成(整个模块)
     global user_file
-    a = input('警告！继续使用该命令会丢失\'change\'命令中已更改的内容，键入\'ok\'继续，其他键返回')
-    if a != 'ok':
-        return
     a = input('请继续输入，目前在read->?')
     if a == 'exit':
         return
@@ -115,6 +112,25 @@ def change(): #change模块 命令支持 add添加内容 add 追加字符 remove
                 f.close()
             else:
                 return
+        if a == 'change':
+            f = open(user_file,'r')
+            user_change_file = f.readlines()
+            f.close()
+            print(user_change_file)
+            print(r'----以上是当前文件，\n为换行符，无需理会----')
+            num = int(input('请输入更改行号'))
+            a = input('请输入更改内容')
+            user_change_file[num-1] = a
+            for i in user_change_file:
+                print(i,end='')
+            print()
+            print(r'---以上是修改后文件,\n为换行符，无需理会---')
+            a = input('确定吗？ y/n')
+            if a == 'y':
+                f = open(user_file,'w')
+                for i in user_change_file:
+                    f.write(i)
+                f.close()
         if a == 'exit': #退出
             return
 
