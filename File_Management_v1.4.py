@@ -24,6 +24,9 @@ def file(): #file 模块 命令支持 exit退出 open打开文件地址 已完�
 
 def read(): #read 模块 命令支持 exit退出  all 读取所有内容 line读取指定行数 已完成(整个模块)
     global user_file
+    if len(user_file) == 0: #文件添加性检查
+        print('你还没有打开文件,请先运行 file->open')
+        return
     a = input('请继续输入，目前在read->?')
     if a == 'exit':
         return
@@ -57,14 +60,42 @@ def setting(): #seeting模块 命令支持 information版本信息 help帮助手
     global help
     a = input('请继续输入，目前在setting->?')
     if a == 'information':
-        print('当前版本：1.3')
+        print('当前版本：1.4')
         return
     if a == 'help':
         print(help)
         return
 
-def seach(): #seach模块 未制作 已完成(整个模块)
-    print('当前版本不支持 检索 功能')
+def search(): #search模块
+    global user_file
+    if len(user_file) == 0: #文件添加性检查
+        print('你还没有打开文件,请先运行 file->open')
+        return
+    a = input('请继续输入，目前在search->?')
+    f = open(user_file,'r')
+    file = f.readlines()
+    if a == 'find': #查找模式
+        a = input('请输入查找内容，输入多个内容时将会进行完全匹配(如查123，则41234算有412434不算有)')
+        finding = []
+        temp = []
+        for i in range(len(file)):
+            for j in range(len(file[i])):
+                if file[i][j:j+len(a)] == a:
+                    temp.append(str(i+1) + '-' + str(j+1))
+            if len(temp) != 0:
+                finding.append(temp)
+            temp = []
+        if len(finding) == 0:
+            print('未能找到该内容')
+        else:
+            print('以 行-列 的格式输出')
+            print('---------以下是查找结果------')
+            for i in finding:
+                for j in i:
+                    print(j,end = '、')
+                print()
+    f.close()
+
 
 def change(): #change模块 命令支持 add添加内容 add 追加字符 remove 删除行 exit退出
     global user_file
@@ -148,8 +179,8 @@ while True:
         change()
     if temp == 'read':
         read()
-    if temp == 'seach':
-        seach()
+    if temp == 'search':
+        search()
     if temp == 'file':
         file()
     if temp == 'setting':

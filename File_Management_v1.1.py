@@ -54,7 +54,7 @@ def setting(): #seeting模块 命令支持 information版本信息 help帮助手
     global help
     a = input('请继续输入，目前在setting->?')
     if a == 'information':
-        print('当前版本：1.0')
+        print('当前版本：1.1')
         return
     if a == 'help':
         print(help)
