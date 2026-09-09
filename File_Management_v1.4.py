@@ -36,7 +36,7 @@ def read(): #read 模块 命令支持 exit退出  all 读取所有内容 line读
         return
     f = open(user_file,'r')
     if a == 'exit':
-        f.close
+        f.close()
         return
     if a == 'all':
         temp_read = f.read()
@@ -50,7 +50,7 @@ def read(): #read 模块 命令支持 exit退出  all 读取所有内容 line读
         a = a.split()
         for i in a:
             print(f'第{i}行：'+str(temp_read[int(i)-1]))
-        f.close
+        f.close()
         return
     else:
         print('你可能输入了错误的命令，重试')
